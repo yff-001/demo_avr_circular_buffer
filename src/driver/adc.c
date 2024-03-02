@@ -1,5 +1,6 @@
-#include <avr/io.h>
 #include "adc.h"
+
+#include <avr/io.h>
 
 void init_adc() {
     DIDR0 = 0xFF;                       // disable digital input buffers

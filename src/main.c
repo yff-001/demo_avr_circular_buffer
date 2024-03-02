@@ -1,24 +1,23 @@
-// #include <avr/interrupt.h>
-// #include <avr/io.h>
-// #include <avr/sleep.h>
-// #include <avr/wdt.h>
-// #include <util/delay.h>
-#include <stdio.h>
+#include "handler/circular_buffer.h"
+#include "handler/device.h"
+
+/*  this part are necessary to make code block inside while loop work
+    they can be removed to achieve a minimal program
+*/
+#include <avr/sleep.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "circular_buffer.h"
-
-void init_device();
+#include "driver/uart.h"
 
 int main() {
     init_device();
+    init_rx_buffer();
 
     char message[100] = {0};
-    uint8_t i = 0;
+    int i = 0;
 
     for(;;) {
-        // sleep_mode();
+        sleep_mode();
         
         /* CPU wakes up and check UART receive buffer */
         if (rx_buffer_available()) {
@@ -34,10 +33,4 @@ int main() {
     }
 
     return 0;
-}
-
-void init_device() {
-    init_rx_buffer();
-    set_sleep_mode(0);
-    sei();
 }

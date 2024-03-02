@@ -1,9 +1,9 @@
+#include "uart.h"
+
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-#include "uart.h"
-
-#define BAUD_0      250000
+#define BAUD_0      500000
 #define UBRR_0      ((F_CPU)/(BAUD_0*8UL)-1)    // see spec sheet: buad rate generator
 
 uint8_t (*write_to_buffer)(uint8_t);               // buffer implementation is provided by handler

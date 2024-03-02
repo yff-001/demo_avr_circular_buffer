@@ -1,26 +1,53 @@
+# AVR-GCC Compiler and flags
 CC = avr-gcc
-CC_OBJCOPY = avr-objcopy
-CC_SIZE = avr-size
-CC_UPLOAD = avrdude
-CFLAGS = -Os -DF_CPU=16000000UL -mmcu=atmega328p
-USBPORT = COM3
+CFLAGS = \
+	-mmcu=$(MCU) \
+	-DF_CPU=16000000UL \
+	-Werror \
+	-Os
+# LDFLAGS = -Wl,--gc-sections \
 
-all: main.elf
+# AVRDUDE settings
+BAUDRATE = 115200
+PROGRAMMER = arduino
+MCU = atmega328p
+PORT = /dev/ttyUSB0
+RM = rm
 
-main.elf: main.o adc.o circular_buffer.o uart.o
-	$(CC) $(CFLAGS) main.o adc.o circular_buffer.o uart.o -o main.elf
+# Directories
+SRC_DIR = src
+LIB_DIR = lib
+OBJ_DIR = obj
+BIN_DIR = bin
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $^
+# Source files
+SRC = $(shell find $(SRC_DIR) -name *.c)
+OBJ = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
-main.hex: main.elf
-	$(CC_OBJCOPY) -O ihex -R .eeprom $< $@
+# Executable
+TARGET = $(BIN_DIR)/app.elf
+HEX = $(BIN_DIR)/app.hex
 
-size: main.elf
-	$(CC_SIZE) --mcu=atmega328p --format=avr main.elf
+all: $(TARGET) $(HEX)
 
-install.main: main.hex
-	$(CC_UPLOAD) -v -V -D -p atmega328p -c arduino -P $(USBPORT)  -b 115200 -U flash:w:$<
+$(TARGET): $(OBJ) $(LIBOBJ)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
+
+$(HEX): $(TARGET)
+	avr-objcopy -O ihex -R .eeprom $(TARGET) $(HEX)
+
+upload: $(HEX)
+	avrdude -b$(BAUDRATE) -c$(PROGRAMMER) -P$(PORT) -p$(MCU) -D -v -V -U flash:w:$(HEX)
+
+size: $(TARGET)
+	avr-size --mcu=$(MCU) --format=avr $(TARGET)
 
 clean:
-	del *.o *.elf *.hex
+	$(RM) -r $(OBJ_DIR)
+	$(RM) $(BIN_DIR)/*
+
+.PHONY: all clean upload size

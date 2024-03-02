@@ -1,7 +1,5 @@
-#include <stdint.h>
-
 #include "circular_buffer.h"
-#include "uart.h"
+#include "../driver/uart.h"
 
 #define BUFFER_SIZE  8
 
