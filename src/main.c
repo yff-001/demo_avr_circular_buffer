@@ -5,9 +5,7 @@ int main() {
     init_rx_buffer();
     init_communication();
 
-    for (;;) {
-        handle_communication();
-    }
+    handle_communication();
 
     return 0;
 }
