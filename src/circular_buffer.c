@@ -1,5 +1,5 @@
 #include "circular_buffer.h"
-#include "../driver/uart.h"
+#include "driver/uart.h"
 
 #define BUFFER_SIZE  8
 
@@ -9,7 +9,7 @@ volatile uint8_t rx_buffer_head = 0;
 volatile uint8_t rx_buffer_tail = 0;
 
 void init_rx_buffer() {
-    uart0_init(&rx_buffer_put);
+    uart0_init(&rx_buffer_put);                                     // register callback function
 }
 
 uint8_t rx_buffer_available() {
