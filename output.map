@@ -1,7 +1,7 @@
 Archive member included to satisfy reference by file (symbol)
 
 /usr/lib/gcc/avr/5.4.0/libgcc.a(_divmodhi4.o)
-                              obj/circular_buffer.o (__divmodhi4)
+                              obj/utils/circular_buffer.o (__divmodhi4)
 /usr/lib/gcc/avr/5.4.0/libgcc.a(_copy_data.o)
                               obj/handler/communication.o (__do_copy_data)
 /usr/lib/gcc/avr/5.4.0/libgcc.a(_clear_bss.o)
@@ -13,6 +13,8 @@ Allocating common symbols
 Common symbol       size              file
 
 write_to_buffer     0x2               obj/driver/uart.o
+rx_buffer_data_space
+                    0x80              obj/handler/communication.o
 
 Discarded input sections
 
@@ -26,20 +28,21 @@ Discarded input sections
  .bss           0x0000000000000000        0x0 obj/driver/adc.o
  .comment       0x0000000000000000       0x12 obj/driver/adc.o
  .text          0x0000000000000000       0x84 obj/handler/communication.o
- .data          0x0000000000000000        0x0 obj/handler/communication.o
+ .data          0x0000000000000000        0x5 obj/handler/communication.o
  .bss           0x0000000000000000        0x0 obj/handler/communication.o
  .rodata.str1.1
                 0x0000000000000000        0x3 obj/handler/communication.o
  .comment       0x0000000000000000       0x12 obj/handler/communication.o
+ COMMON         0x0000000000000000       0x80 obj/handler/communication.o
  .text          0x0000000000000000        0x0 obj/main.o
  .data          0x0000000000000000        0x0 obj/main.o
  .bss           0x0000000000000000        0x0 obj/main.o
- .text.startup  0x0000000000000000       0x12 obj/main.o
+ .text.startup  0x0000000000000000        0xe obj/main.o
  .comment       0x0000000000000000       0x12 obj/main.o
- .text          0x0000000000000000       0x76 obj/circular_buffer.o
- .data          0x0000000000000000        0x0 obj/circular_buffer.o
- .bss           0x0000000000000000        0xb obj/circular_buffer.o
- .comment       0x0000000000000000       0x12 obj/circular_buffer.o
+ .text          0x0000000000000000       0x26 obj/utils/circular_buffer.o
+ .data          0x0000000000000000        0x0 obj/utils/circular_buffer.o
+ .bss           0x0000000000000000        0x0 obj/utils/circular_buffer.o
+ .comment       0x0000000000000000       0x12 obj/utils/circular_buffer.o
  .text          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/libgcc.a(_divmodhi4.o)
  .data          0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/libgcc.a(_divmodhi4.o)
  .bss           0x0000000000000000        0x0 /usr/lib/gcc/avr/5.4.0/libgcc.a(_divmodhi4.o)
@@ -123,7 +126,7 @@ LOAD obj/driver/uart.o
 LOAD obj/driver/adc.o
 LOAD obj/handler/communication.o
 LOAD obj/main.o
-LOAD obj/circular_buffer.o
+LOAD obj/utils/circular_buffer.o
 START GROUP
 LOAD /usr/lib/gcc/avr/5.4.0/libgcc.a
 LOAD /usr/lib/gcc/avr/5.4.0/../../../avr/lib/libm.a

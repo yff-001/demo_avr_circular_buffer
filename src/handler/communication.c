@@ -1,10 +1,12 @@
 #include "communication.h"
-#include "../circular_buffer.h"
+#include "../utils/circular_buffer.h"
 #include "../driver/uart.h"
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <stdlib.h>
 #include <string.h>
+
+CB_CREATE(rx_buffer, 128);
 
 void init_communication() {
     set_sleep_mode(0);
