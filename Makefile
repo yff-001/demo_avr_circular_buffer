@@ -5,7 +5,7 @@ CFLAGS = \
 	-DF_CPU=16000000UL \
 	-Werror \
 	-Os
-# LDFLAGS = -Wl,--gc-sections \
+LDFLAGS = -Wl,-Map,output.map -Wl,--gc-sections \
 
 # AVRDUDE settings
 BAUDRATE = 115200
@@ -31,7 +31,7 @@ HEX = $(BIN_DIR)/app.hex
 all: $(TARGET) $(HEX)
 
 $(TARGET): $(OBJ) $(LIBOBJ)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
